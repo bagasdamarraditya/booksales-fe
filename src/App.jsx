@@ -6,12 +6,20 @@ import Login from "./assets/pages/auth/login.jsx";
 import Register from "./assets/pages/auth/register.jsx";
 import AdminLayout from "./assets/layouts/admin.jsx";
 import Dashboard from "./assets/pages/admin/index.jsx";
+
+// Books
 import AdminBooks from "./assets/pages/admin/books/index.jsx";
 import BookCreate from "./assets/pages/admin/books/create.jsx";
+
+// Authors
 import AdminAuthors from "./assets/pages/admin/authors/index.jsx";
-import AuthorCreate from "./assets/pages/admin/authors/create.jsx"; // ✅ tambahkan
+import AuthorCreate from "./assets/pages/admin/authors/create.jsx";
+import AuthorEdit from "./assets/pages/admin/authors/edit.jsx"; // ✅ Tambah
+
+// Genres
 import AdminGenres from "./assets/pages/admin/genres/index.jsx";
-import GenreCreate from "./assets/pages/admin/genres/create.jsx"; // ✅ tambahkan
+import GenreCreate from "./assets/pages/admin/genres/create.jsx";
+import GenreEdit from "./assets/pages/admin/genres/edit.jsx"; // ✅ Tambah
 
 function App() {
   return (
@@ -40,13 +48,15 @@ function App() {
           {/* Authors */}
           <Route path="authors">
             <Route index element={<AdminAuthors />} />
-            <Route path="create" element={<AuthorCreate />} /> 
+            <Route path="create" element={<AuthorCreate />} />
+            <Route path="edit/:id" element={<AuthorEdit />} /> {/* ✅ Route Edit */}
           </Route>
 
           {/* Genres */}
           <Route path="genres">
             <Route index element={<AdminGenres />} />
             <Route path="create" element={<GenreCreate />} />
+            <Route path="edit/:id" element={<GenreEdit />} /> {/* ✅ Route Edit */}
           </Route>
         </Route>
       </Routes>

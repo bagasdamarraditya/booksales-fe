@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getGenres } from "../../../../_services/genres";
+import { getGenres, deleteGenre } from "../../../../_services/genres";
 
 export default function AdminGenres() {
   const [genres, setGenres] = useState([]);
@@ -21,6 +21,17 @@ export default function AdminGenres() {
 
   const toggleDropdown = (id) => {
     setOpenDropdownId(openDropdownId === id ? null : id);
+  };
+
+  const handleDelete = async (id) => {
+    if (!confirm("Yakin ingin menghapus genre ini?")) return;
+    try {
+      await deleteGenre(id);
+      alert("Genre berhasil dihapus!");
+      setGenres(genres.filter((g) => g.id !== id));
+    } catch (error) {
+      console.error("Gagal menghapus genre:", error);
+    }
   };
 
   return (
@@ -132,23 +143,23 @@ export default function AdminGenres() {
                         shadow dark:bg-gray-700 dark:divide-gray-600">
                         <ul className="py-1 text-sm text-gray-700 dark:text-gray-200">
                           <li>
-                            <a
-                              href="#"
-                              className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 
+                            <button
+                              onClick={() => navigate(`/admin/genres/edit/${genre.id}`)}
+                              className="w-full text-left block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 
                               dark:hover:text-white"
                             >
                               Edit
-                            </a>
+                            </button>
                           </li>
                         </ul>
                         <div className="py-1">
-                          <a
-                            href="#"
-                            className="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 
+                          <button
+                            onClick={() => handleDelete(genre.id)}
+                            className="w-full text-left block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 
                               dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
                           >
                             Delete
-                          </a>
+                          </button>
                         </div>
                       </div>
                     )}

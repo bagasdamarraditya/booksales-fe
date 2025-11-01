@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getAuthors } from "../../../../_services/authors";
+import { getAuthors, deleteAuthor } from "../../../../_services/authors";
 
 export default function AdminAuthors() {
   const [authors, setAuthors] = useState([]);
@@ -21,6 +21,18 @@ export default function AdminAuthors() {
 
   const toggleDropdown = (id) => {
     setOpenDropdownId(openDropdownId === id ? null : id);
+  };
+
+  // 🧩 Fungsi hapus data
+  const handleDelete = async (id) => {
+    if (!confirm("Yakin ingin menghapus author ini?")) return;
+    try {
+      await deleteAuthor(id);
+      alert("Author berhasil dihapus!");
+      setAuthors(authors.filter((a) => a.id !== id)); // hapus dari state
+    } catch (error) {
+      console.error("Gagal menghapus author:", error);
+    }
   };
 
   return (
@@ -144,23 +156,23 @@ export default function AdminAuthors() {
                         shadow dark:bg-gray-700 dark:divide-gray-600">
                         <ul className="py-1 text-sm text-gray-700 dark:text-gray-200">
                           <li>
-                            <a
-                              href="#"
-                              className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 
+                            <button
+                              onClick={() => navigate(`/admin/authors/edit/${author.id}`)}
+                              className="w-full text-left block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 
                               dark:hover:text-white"
                             >
                               Edit
-                            </a>
+                            </button>
                           </li>
                         </ul>
                         <div className="py-1">
-                          <a
-                            href="#"
-                            className="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 
+                          <button
+                            onClick={() => handleDelete(author.id)}
+                            className="w-full text-left block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 
                               dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
                           >
                             Delete
-                          </a>
+                          </button>
                         </div>
                       </div>
                     )}
